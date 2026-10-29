@@ -94,3 +94,26 @@ class ServicioCompras{
        }
    }
 }
+
+public class TiendaVideojuegos{
+   public static void main(String[] args){
+      ArrayList<Videojuego> catalogo = new ArrayList<>();
+      catalogo.add(new Videojuego("Pixel Quest", 70.0, new PrecioNormal()));
+      catalogo.add(new Videojuego("Space Runner", 80.0, new PrecioNormal()));
+      catalogo.add(new Videojuego("Block Puzzle", 40.0, new PrecioGratuito()));
+      for (Videojuego j : catalogo){
+         System.out.println(j.getTitulo() + ": Bs. " + j.obtenerPrecioFinal());
+      }
+
+      Cliente cliente = new Cliente("Gabriel");
+      PagoTarjetaRegalo regalo = new PagoTarjetaRegalo(70.0);
+      ServicioCompras servicio = new ServicioCompras();
+      servicio.comprar(catalogo.get(1), regalo, cliente);
+
+      catalogo.get(1).setEstrategia(new PrecioOferta(25));
+      System.out.println("Space Runner en oferta: Bs. "
+               + catalogo.get(1).obtenerPrecioFinal());
+      servicio.comprar(catalogo.get(1), regalo, cliente);
+      servicio.comprar(catalogo.get(2), regalo, cliente);
+   }
+}
