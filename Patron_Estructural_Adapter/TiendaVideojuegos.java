@@ -1,7 +1,39 @@
+class Videojuego{
+   private String titulo;
+   private double precio;
+   public Videojuego(String titulo, double precio){
+       this.titulo = titulo;
+       this.precio = precio;
+   }
+   public String getTitulo(){
+      return titulo;
+   }
+   public double getPrecio(){
+      return precio;
+   }
+}
+
 /* PATRON ADAPTER (Estructural). Rol: interfaz objetivo (target). Es lo que
 espera el servicio de compras, un metodo pagar(monto) en bolivianos. */
 interface MetodoPago{
    boolean pagar(double monto);
+}
+
+// Medio de pago propio de la tienda, ya cumple con la interfaz objetivo.
+class PagoTarjetaRegalo implements MetodoPago{
+   private double saldo;
+   public PagoTarjetaRegalo(double saldo){
+      this.saldo = saldo; 
+   }
+   public boolean pagar(double monto){
+       if (monto > saldo){
+           System.out.println("Saldo insuficiente (saldo: Bs. " + saldo + ")");
+           return false;
+       }
+       saldo -= monto;
+       System.out.println("Cobrando Bs. " + monto + " (saldo: " + saldo + ")");
+       return true;
+   }
 }
 
 /* Rol: clase adaptada (adaptee). Es una pasarela de pagos externa que no se
@@ -22,6 +54,16 @@ class AdaptadorPasarela implements MetodoPago{
    }
    public boolean pagar(double monto){
        return pasarela.cobrarEnCentavos(Math.round(monto * 100));
+   }
+}
+
+class Cliente{
+   private String nombre;
+   public Cliente(String nombre){
+      this.nombre = nombre;
+   }
+   public void notificar(String mensaje){
+       System.out.println("[Mensaje para " + nombre + "] " + mensaje);
    }
 }
 
