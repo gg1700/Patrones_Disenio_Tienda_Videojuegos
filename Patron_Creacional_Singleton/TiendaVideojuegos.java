@@ -1,3 +1,18 @@
+class Videojuego{
+   private String titulo;
+   private double precio;
+   public Videojuego(String titulo, double precio){
+       this.titulo = titulo;
+       this.precio = precio;
+   }
+   public String getTitulo(){
+      return titulo;
+   }
+   public double getPrecio(){
+      return precio;
+   }
+}
+
 /* PATRON SINGLETON (Creacional). Rol: clase singleton. Su constructor es
 privado y la unica instancia se obtiene con getInstancia(), asi toda la tienda
 comparte un mismo catalogo de videojuegos. */
@@ -25,6 +40,36 @@ class Catalogo{
            }
        }
        return null;
+   }
+}
+
+interface MetodoPago{
+   boolean pagar(double monto);
+}
+
+class PagoTarjetaRegalo implements MetodoPago{
+   private double saldo;
+   public PagoTarjetaRegalo(double saldo){
+      this.saldo = saldo; 
+   }
+   public boolean pagar(double monto){
+       if (monto > saldo){
+           System.out.println("Saldo insuficiente (saldo: Bs. " + saldo + ")");
+           return false;
+       }
+       saldo -= monto;
+       System.out.println("Cobrando Bs. " + monto + " (saldo: " + saldo + ")");
+       return true;
+   }
+}
+
+class Cliente{
+   private String nombre;
+   public Cliente(String nombre){
+      this.nombre = nombre;
+   }
+   public void notificar(String mensaje){
+       System.out.println("[Mensaje para " + nombre + "] " + mensaje);
    }
 }
 
