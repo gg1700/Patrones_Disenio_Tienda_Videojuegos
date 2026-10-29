@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 class Videojuego{
    private String titulo;
    private double precio;
@@ -85,5 +87,26 @@ class ServicioCompras{
        }else{
            cliente.notificar("Compra rechazada: " + titulo);
        }
+   }
+}
+
+public class TiendaVideojuegos{
+   public static void main(String[] args){
+       Catalogo.getInstancia().agregar(new Videojuego("Pixel Quest", 70.0));
+       Catalogo.getInstancia().agregar(new Videojuego("Space Runner", 60.0));
+       for (Videojuego j : Catalogo.getInstancia().getJuegos()){
+           System.out.println(j.getTitulo() + ": Bs. " + j.getPrecio());
+       }
+       Catalogo otraReferencia = Catalogo.getInstancia();
+       boolean misma = otraReferencia == Catalogo.getInstancia();
+       System.out.println("Misma instancia: " + misma);
+
+
+       Cliente cliente = new Cliente("Gabriel");
+       PagoTarjetaRegalo regalo = new PagoTarjetaRegalo(100.0);
+       ServicioCompras servicio = new ServicioCompras();
+       servicio.comprar("Pixel Quest", regalo, cliente);
+       servicio.comprar("Space Runner", regalo, cliente);
+       servicio.comprar("Block Puzzle", regalo, cliente);
    }
 }
