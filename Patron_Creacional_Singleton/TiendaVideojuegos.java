@@ -1,3 +1,20 @@
+import java.util.ArrayList;
+
+class Videojuego{
+   private String titulo;
+   private double precio;
+   public Videojuego(String titulo, double precio){
+       this.titulo = titulo;
+       this.precio = precio;
+   }
+   public String getTitulo(){
+      return titulo;
+   }
+   public double getPrecio(){
+      return precio;
+   }
+}
+
 /* PATRON SINGLETON (Creacional). Rol: clase singleton. Su constructor es
 privado y la unica instancia se obtiene con getInstancia(), asi toda la tienda
 comparte un mismo catalogo de videojuegos. */
@@ -28,6 +45,36 @@ class Catalogo{
    }
 }
 
+interface MetodoPago{
+   boolean pagar(double monto);
+}
+
+class PagoTarjetaRegalo implements MetodoPago{
+   private double saldo;
+   public PagoTarjetaRegalo(double saldo){
+      this.saldo = saldo; 
+   }
+   public boolean pagar(double monto){
+       if (monto > saldo){
+           System.out.println("Saldo insuficiente (saldo: Bs. " + saldo + ")");
+           return false;
+       }
+       saldo -= monto;
+       System.out.println("Cobrando Bs. " + monto + " (saldo: " + saldo + ")");
+       return true;
+   }
+}
+
+class Cliente{
+   private String nombre;
+   public Cliente(String nombre){
+      this.nombre = nombre;
+   }
+   public void notificar(String mensaje){
+       System.out.println("[Mensaje para " + nombre + "] " + mensaje);
+   }
+}
+
 /* Rol: usuario del singleton. No crea el catalogo, lo pide con getInstancia(),
 por eso trabaja con la misma instancia que usa el resto del programa. */
 class ServicioCompras{
@@ -40,5 +87,26 @@ class ServicioCompras{
        }else{
            cliente.notificar("Compra rechazada: " + titulo);
        }
+   }
+}
+
+public class TiendaVideojuegos{
+   public static void main(String[] args){
+       Catalogo.getInstancia().agregar(new Videojuego("Pixel Quest", 70.0));
+       Catalogo.getInstancia().agregar(new Videojuego("Space Runner", 60.0));
+       for (Videojuego j : Catalogo.getInstancia().getJuegos()){
+           System.out.println(j.getTitulo() + ": Bs. " + j.getPrecio());
+       }
+       Catalogo otraReferencia = Catalogo.getInstancia();
+       boolean misma = otraReferencia == Catalogo.getInstancia();
+       System.out.println("Misma instancia: " + misma);
+
+
+       Cliente cliente = new Cliente("Gabriel");
+       PagoTarjetaRegalo regalo = new PagoTarjetaRegalo(100.0);
+       ServicioCompras servicio = new ServicioCompras();
+       servicio.comprar("Pixel Quest", regalo, cliente);
+       servicio.comprar("Space Runner", regalo, cliente);
+       servicio.comprar("Block Puzzle", regalo, cliente);
    }
 }
