@@ -11,6 +11,24 @@ class PrecioNormal implements EstrategiaPrecio{
    }
 }
 
+// Rol: estrategia concreta, aplica un descuento porcentual.
+class PrecioOferta implements EstrategiaPrecio{
+   private int descuento;
+   public PrecioOferta(int descuento){
+      this.descuento = descuento;
+   }
+   public double calcular(double precioBase){
+       return precioBase - (precioBase * descuento / 100);
+   }
+}
+
+// Rol: estrategia concreta, el juego no tiene costo.
+class PrecioGratuito implements EstrategiaPrecio{
+   public double calcular(double precioBase){
+      return 0;
+   }
+}
+
 /* Rol: contexto (context). Guarda una estrategia y le delega el calculo del
 precio, se puede cambiar en cualquier momento con setEstrategia(). */
 class Videojuego{
