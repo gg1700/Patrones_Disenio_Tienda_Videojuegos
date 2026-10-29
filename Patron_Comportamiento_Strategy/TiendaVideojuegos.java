@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /* PATRON STRATEGY (Comportamiento). Rol: estrategia (strategy). Interfaz comun
 de la familia de algoritmos para calcular el precio de un juego. */
 interface EstrategiaPrecio{
@@ -49,6 +51,36 @@ class Videojuego{
    }
    public double obtenerPrecioFinal(){
       return estrategia.calcular(precioBase);
+   }
+}
+
+interface MetodoPago{
+   boolean pagar(double monto);
+}
+
+class PagoTarjetaRegalo implements MetodoPago{
+   private double saldo;
+   public PagoTarjetaRegalo(double saldo){
+      this.saldo = saldo;
+   }
+   public boolean pagar(double monto){
+       if (monto > saldo){
+           System.out.println("Saldo insuficiente (saldo: Bs. " + saldo + ")");
+           return false;
+       }
+       saldo -= monto;
+       System.out.println("Cobrando Bs. " + monto + " (saldo: " + saldo + ")");
+       return true;
+   }
+}
+
+class Cliente{
+   private String nombre;
+   public Cliente(String nombre){
+      this.nombre = nombre;
+   }
+   public void notificar(String mensaje){
+       System.out.println("[Mensaje para " + nombre + "] " + mensaje);
    }
 }
 
