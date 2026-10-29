@@ -78,3 +78,19 @@ class ServicioCompras{
        }
    }
 }
+
+public class TiendaVideojuegos{
+   public static void main(String[] args){
+       Videojuego pixel = new Videojuego("Pixel Quest", 70.0);
+       Videojuego space = new Videojuego("Space Runner", 120.0);
+       Cliente cliente = new Cliente("Gabriel");
+       ServicioCompras servicio = new ServicioCompras();
+       PasarelaExterna externa = new PasarelaExterna();
+       AdaptadorPasarela adaptador = new AdaptadorPasarela(externa);
+
+
+       servicio.comprar(pixel, new PagoTarjetaRegalo(100.0), cliente);
+       servicio.comprar(pixel, adaptador, cliente);
+       servicio.comprar(space, adaptador, cliente);
+   }
+}
